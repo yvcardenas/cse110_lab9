@@ -47,6 +47,14 @@
       width: 122px;
     }
   </style>
+  <!-- TrackJS Integration-->
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "fbc5e8270482430195f91907a7796249"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>                       
 </head>
 
 <body>
@@ -84,6 +92,8 @@
       <button>End Timer</button>
       <button>Console Trace</button>
       <button>Trigger a Global Error</button>
+      <button>Try Catch Demo</button>
+      <button>Throw Custom Error</button>
     </section>
   </main>
 
@@ -100,8 +110,115 @@
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
+    errorBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        switch (btn.innerText){
+          /*STEP 2: Adding Buttons for Console Testing
+          Now for each of the buttons in the starter code (except for the "Trigger a Global Error" button) give functionality to them that correspond to each of the `console` methods we listed previously*/
+          //Console Log
+          case 'Console Log':
+            console.log('This is console log message.');
+            break;
+          //Console Error
+          case 'Console Error':
+            console.error('This is a console error message.');
+            break;
+          //Console Count
+          case 'Console Count':
+            console.count('Console Count');
+            break;
+          //Console Warn
+          case 'Console Warn':
+            console.warn('This is a console warning message.');
+            break;
+          //Console Assert
+          case 'Console Assert':
+            console.assert(false, 'This is a console assert message.');
+            break;
+          //Console Clear
+          case 'Console':
+            console.clear();
+            break;
+          //Console Dir
+          case 'Console Dir':
+            console.dir(document.body);
+            break;
+          //Console dirxml
+          case 'Console dirxml':
+            console.dirxml(document);
+            break;
+          //Console Group Start
+          case 'Console Group Start':
+            console.group('Console Group');
+            console.log('Inside group');
+            console.groupEnd();
+            break;
+          //Console Group End
+          case 'Console Group End':
+            console.groupEnd();
+            break;
+          //Console Table
+          case 'Console Table':
+            console.table([{name: "Yvanna", age: 21}, {name: "Julie", age: 23}]);
+            break;
+          //Start Timer
+          case 'Start Timer':
+            console.time('Timer');
+            break;
+          //End Timer
+          case 'End Timer':
+            console.timeEnd('Timer');
+            break;
+          //Console Trace
+          case 'Console':
+            console.trace('Trace message.');
+            break;
+          case 'Trigger a Global Error':
+            try{
+              aintGonnaWork();
+            } catch (error){
+              console.error('Caught glocal error:', error);
+            }
+            break;
+          case 'Try Catch Demo':
+            try{
+              let result = calculateSomething();
+              console.log('Result:', result);
+            } catch (error){
+              console.error('Caught Error:', error);
+            } finally {
+              console.log('This always runs.');
+            }
+            break;
+          // For Step 4, throwing custom error
+          case 'Throw Custom Error':
+            try{
+              throw new CustomError('This is a custom error.');
+            } catch (error) {
+              console.error('Caught custom error:', error);
+            }
+            break;
+        }
+      });
+    });
+
+    //Intentionally causing an error
+    function calculateSomething(){
+      throw new Error('An unexpected error occurred.')
+    }
+
+    /*STEP 4: Throw and Custom Errors
+    Explore the use of 'throw' and extending the 'Error' object to use a custom error type.*/
+    class CustomError extends Error{
+      constructor(message){
+        super(message);
+        this.name = "CustomError";
+      }
+    }
+
+    window.addEventListener('error', (event) => {
+      console.error('Caught global error:', event.message);
+    });
   </script>
 </body>
 
